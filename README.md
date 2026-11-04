@@ -19,6 +19,14 @@ The release app's client ID is the organization variable `RELEASE_APP_CLIENT_ID`
     permission-issues: write
 ```
 
+### How the values travel
+
+1. **Organization to this workflow.** GitHub Actions hands an organization secret or variable to every workflow run in a repository that the value's **Repository access** setting covers. `RELEASE_APP_CLIENT_ID` and `RELEASE_APP_PRIVATE_KEY` are shared with public repositories, and this repository is public, so its runs receive them as `${{ vars.RELEASE_APP_CLIENT_ID }}` and `${{ secrets.RELEASE_APP_PRIVATE_KEY }}`. No app or token takes part in this step. No API could do it instead: GitHub's API never returns a secret's value, whatever permissions the caller holds.
+2. **This workflow to each private repository.** The workflow mints a sync app token and runs `gh variable set` and `gh secret set` against each repository in scope. This is the only step that uses the sync app, so it needs only the repository permissions Secrets and Variables (write), plus Metadata.
+3. **Private repository to its release workflow.** The repository's own release workflow reads the copies as `vars.RELEASE_APP_CLIENT_ID` and `secrets.RELEASE_APP_PRIVATE_KEY` and mints a release app token from them.
+
+### Scope
+
 A private repository is in scope when it is not archived and carries the repository topic `release-please`. Add the topic (on the repository page, the gear next to **About**) to any private repository that releases, before its first release workflow runs. Topics come with the Metadata permission every GitHub App has, so the sync app needs no access to repository contents.
 
 The workflow runs daily, on demand from the Actions tab, and whenever the workflow file changes on `main`. It never deletes a copy. A repository that leaves scope keeps its copies until someone deletes them in that repository's settings.
@@ -63,9 +71,11 @@ In this repository's **Settings > Secrets and variables > Actions**:
 
 Do not add these at the organization level. Delete the downloaded `.pem` after saving it, or keep it only in 1Password.
 
-### 4. Check the release app
+### 4. Check the release app and the organization values
 
-The release app needs **Contents**, **Pull requests**, and **Issues** set to Read and write, with no Secrets or Variables permission. It must be installed on every repository that releases, and `RELEASE_APP_CLIENT_ID` and `RELEASE_APP_PRIVATE_KEY` must be visible to this repository at the organization level.
+The release app needs **Contents**, **Pull requests**, and **Issues** set to Read and write, with no Secrets or Variables permission, and it must be installed on every repository that releases.
+
+In the organization's **Settings > Secrets and variables > Actions**, the **Repository access** of both `RELEASE_APP_CLIENT_ID` (Variables tab) and `RELEASE_APP_PRIVATE_KEY` (Secrets tab) must include this repository: "Public repositories" does, as would "Selected repositories" with `.github` in the list. That setting, not any app permission, is what lets this workflow read them ([How the values travel](#how-the-values-travel)).
 
 ### 5. Tag the repositories that release
 
