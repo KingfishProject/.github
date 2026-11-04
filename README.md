@@ -19,13 +19,13 @@ The release app's client ID is the organization variable `RELEASE_APP_CLIENT_ID`
     permission-issues: write
 ```
 
-A private repository is in scope when it is not archived and either has `release-please-config.json` at the root of its default branch or carries the repository topic `release-please`. Add the topic to opt a repository in before its release-please config reaches the default branch.
+A private repository is in scope when it is not archived and carries the repository topic `release-please`. Add the topic (on the repository page, the gear next to **About**) to any private repository that releases, before its first release workflow runs. Topics come with the Metadata permission every GitHub App has, so the sync app needs no access to repository contents.
 
 The workflow runs daily, on demand from the Actions tab, and whenever the workflow file changes on `main`. It never deletes a copy. A repository that leaves scope keeps its copies until someone deletes them in that repository's settings.
 
 ### Why a second app
 
-Writing another repository's secrets needs the Secrets and Variables permissions. If the release app held them, every private repository that stores its key could mint a token that rewrites secrets in any repository the app is installed on. The sync uses a second GitHub App (the sync app) with only those permissions. Its key is stored in this repository alone, and the release app keeps only Contents, Pull requests, and Issues.
+Writing another repository's secrets needs the Secrets and Variables permissions. If the release app held them, every private repository that stores its key could mint a token that rewrites secrets in any repository the app is installed on. The sync uses a second GitHub App (the sync app) with only those two permissions, plus the Metadata permission every app has. It holds no organization permissions: the organization's values reach this workflow through the `vars` and `secrets` contexts, never through the app. Its key is stored in this repository alone, and the release app keeps only Contents, Pull requests, and Issues.
 
 ### Public logs
 
@@ -43,9 +43,9 @@ In the organization's settings, open **Developer settings > GitHub Apps > New Gi
 - **Repository permissions**:
   - **Secrets**: Read and write
   - **Variables**: Read and write
-  - **Contents**: Read-only (to look for `release-please-config.json`)
-  - **Metadata**: Read-only (required)
-- **Organization permissions**: none.
+  - **Metadata**: Read-only (GitHub requires it; it also covers topics)
+  - Everything else, including Contents and Issues: No access.
+- **Organization permissions**: none. Organization secrets and variables in particular stay at No access.
 - **Where can this GitHub App be installed?**: Only on this account.
 
 After creating it, copy the **Client ID**, then generate a private key under **Private keys** (a `.pem` file downloads).
@@ -67,9 +67,13 @@ Do not add these at the organization level. Delete the downloaded `.pem` after s
 
 The release app needs **Contents**, **Pull requests**, and **Issues** set to Read and write, with no Secrets or Variables permission. It must be installed on every repository that releases, and `RELEASE_APP_CLIENT_ID` and `RELEASE_APP_PRIVATE_KEY` must be visible to this repository at the organization level.
 
-### 5. Run it
+### 5. Tag the repositories that release
 
-Merge the workflow to `main` (that push runs it once), or open **Actions > Sync release app credentials > Run workflow**. The run summary shows how many repositories were updated. Re-run any release workflow that failed because the credentials were missing.
+Add the topic `release-please` to every private repository that runs release-please.
+
+### 6. Run it
+
+Merge the workflow to `main` (that push runs it once), or open **Actions > Sync release app credentials > Run workflow**. The run summary shows how many repositories received the credentials, how many lack the topic, and how many failed. Re-run any release workflow that failed because the credentials were missing.
 
 ### Hardening (optional)
 
