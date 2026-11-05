@@ -69,13 +69,17 @@ In this repository's **Settings > Secrets and variables > Actions**:
 - Variables tab: `SYNC_APP_CLIENT_ID` = the sync app's client ID.
 - Secrets tab: `SYNC_APP_PRIVATE_KEY` = the full contents of the `.pem` file, including the `BEGIN` and `END` lines.
 
-The key has to keep its line breaks. A key pasted as one line, with spaces or a literal `\n` where the newlines were, fails with "DECODER routines::unsupported" (and the workflow's first step now says so). Setting the secret from the file avoids that:
+The key has to keep its line breaks. A key whose line breaks turned into spaces, or were dropped, fails with "DECODER routines::unsupported", and the workflow's first step names the secret that has the problem. A key stored on one line with literal `\n` escapes works, because the token action turns them back into line breaks. Setting the secret from the file avoids the problem:
 
 ```sh
 gh secret set SYNC_APP_PRIVATE_KEY --repo KingfishProject/.github < path/to/key.pem
 ```
 
-The same applies to the organization secret `RELEASE_APP_PRIVATE_KEY`: paste it from the `.pem` file opened in a text editor, not from a field that shows it on one line.
+The organization secret `RELEASE_APP_PRIVATE_KEY` follows the same rule. Setting it from the file, limited to this repository (the sync delivers it everywhere else), needs a `gh` login with the `admin:org` scope (`gh auth refresh -h github.com -s admin:org`):
+
+```sh
+gh secret set RELEASE_APP_PRIVATE_KEY --org KingfishProject --visibility selected --repos .github < path/to/release-app-key.pem
+```
 
 Do not add the sync app's values at the organization level. Delete the downloaded `.pem` after saving it, or keep it only in 1Password.
 
