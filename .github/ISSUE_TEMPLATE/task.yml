@@ -1,0 +1,38 @@
+name: Task
+description: Work that adds nothing a user can do or reach, such as a migration, a cleanup, a dependency update, or a decision to record.
+type: Task
+projects: ["KingfishProject/5"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        In the sidebar, set **Priority** and **Effort**, and a **Target date** when the work is due by a certain date. If it belongs to a larger piece of work, such as a release, add it as a sub-issue of that issue. Fields and sub-issues need triage access; without it, leave them to a maintainer.
+
+        In a public repository, leave out the names of private repositories, links into them, people's names, and anything under investigation.
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+      description: What prompted the work, with links to the issue, file, or decision behind it.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: "What to change, as a checklist with one `- [ ]` line per item. Name the files involved, and in a private repository the other repositories too."
+      placeholder: "- [ ] "
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance
+      description: How anyone can tell the work is done.
+    validations:
+      required: true
+  - type: input
+    id: depends-on
+    attributes:
+      label: Depends on
+      description: "Issues or pull requests that have to land first, such as #12."

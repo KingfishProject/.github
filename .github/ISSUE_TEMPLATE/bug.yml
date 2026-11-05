@@ -1,0 +1,37 @@
+name: Bug report
+description: Something that behaves wrongly. In a public repository, report a security problem privately instead.
+type: Bug
+projects: ["KingfishProject/5"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        In the sidebar, set **Priority** and **Effort**, and a **Target date** when the fix is due by a certain date. Fields need triage access; without it, leave them to a maintainer.
+
+        In a public repository, never put a security problem, an exposed secret, or anything private in an issue, not even quoted. Report it privately, as the organization's [security policy](https://github.com/KingfishProject/.github/blob/main/SECURITY.md) says.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you saw, quoted exactly where you can.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should happen
+      description: The behavior you expected, and the source for it if there is one.
+    validations:
+      required: true
+  - type: textarea
+    id: where
+    attributes:
+      label: Where
+      description: The file and line, URL, workflow run, or command.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: "The steps, if they aren't obvious from the above."
