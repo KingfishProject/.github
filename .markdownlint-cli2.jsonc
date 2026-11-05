@@ -1,0 +1,26 @@
+// Markdown style for this repository. The Checks workflow runs it through
+// DavidAnson/markdownlint-cli2-action@v25 (markdownlint-cli2 0.24.0). To run
+// the same check locally: npx markdownlint-cli2@0.24.0 "**/*.md"
+{
+  "config": {
+    "default": true,
+    // Prose paragraphs are one line each; wrapping is the editor's job.
+    "MD013": false,
+    // Repeated headings such as "Examples" are fine in different sections.
+    "MD024": { "siblings_only": true },
+    // Inline HTML only for anchors, line breaks, collapsible sections,
+    // superscripts, and key names.
+    "MD033": { "allowed_elements": ["a", "br", "details", "summary", "sup", "kbd"] },
+    // Tables are not padded to line their columns up.
+    "MD060": false
+  },
+  "overrides": [
+    {
+      // A pull request template fills in a pull request's body, so it opens
+      // with "Closes #" and "##" sections rather than a top-level heading.
+      "filter": ["**/pull_request_template.md", "**/PULL_REQUEST_TEMPLATE/*.md"],
+      "config": { "MD041": false },
+      "combine": "merge"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+# Checks once a week for newer releases of the actions this repository's
+# workflows use, and opens one pull request for all of them. Its title starts
+# with "ci(deps):", the type and scope the organization gives action updates.
+#
+# Dependabot does not read the versions pinned inside run: commands, such as
+# actionlint-py and PyYAML in checks.yml, or the markdownlint-cli2 version
+# that .markdownlint-cli2.jsonc names for local runs. Update those by hand,
+# the last one whenever DavidAnson/markdownlint-cli2-action moves to a new
+# major.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
+      include: scope
+    groups:
+      actions:
+        patterns: ["*"]

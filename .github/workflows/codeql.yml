@@ -1,0 +1,61 @@
+name: CodeQL
+
+# CodeQL code scanning of this repository's workflows (the CodeQL language
+# "actions"). Its default queries look for script injection from untrusted
+# input, untrusted code checked out in a privileged workflow, cache and
+# artifact poisoning, workflows without a permissions block, and actions with
+# known vulnerabilities. Findings appear on the pull request that introduces
+# them and on the repository's Security and quality tab, where only people
+# with write access can see the full list.
+#
+# Runs on every pull request, every push to main, and once a week, so that new
+# queries also reach workflows nobody has changed.
+#
+# The queries are the security-extended suite without its unpinned-tag query
+# (actions/unpinned-tag), which flags third-party actions pinned to a tag
+# rather than a commit SHA; the organization pins tags. The rest of the
+# extended suite adds medium-precision checks for code injection, environment
+# and PATH injection, artifact poisoning, and untrusted checkouts.
+#
+# GitHub rejects the results of a workflow like this one while CodeQL's
+# default setup is turned on for the repository, so default setup stays off
+# here (Settings > Advanced Security).
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "41 7 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze workflows
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # security-events: write uploads the results. A private repository would
+    # also need actions: read; this one is public.
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: github/codeql-action/init@v4
+        with:
+          languages: actions
+          build-mode: none
+          config: |
+            queries:
+              - uses: security-extended
+            query-filters:
+              - exclude:
+                  id: actions/unpinned-tag
+
+      - uses: github/codeql-action/analyze@v4
+        with:
+          category: /language:actions

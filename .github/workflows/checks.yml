@@ -1,0 +1,73 @@
+name: Checks
+
+# Runs on every pull request and on every push to main:
+#   - actionlint on every workflow in .github/workflows, with shellcheck on
+#     each run: script
+#   - every issue form and config.yml in .github/ISSUE_TEMPLATE, against the
+#     syntax GitHub documents (.github/scripts/check_issue_forms.py)
+#   - Markdown style, as .markdownlint-cli2.jsonc sets it
+#
+# This repository and its Actions logs are public. These jobs check only this
+# repository's own files and use no secret, so their logs show nothing that is
+# not public already. The workflow token can only read this repository's
+# contents, and checkout does not leave it in the git config.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  workflows:
+    name: Workflows
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      # setup-uv stopped publishing floating major tags at v8, so pin the release.
+      # Its cache is off: this repository has no lockfile to key one on.
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          enable-cache: false
+
+      # With no arguments, actionlint checks every workflow file under
+      # .github/workflows. shellcheck ships on GitHub's Ubuntu runners, so
+      # actionlint also checks every run: script.
+      - name: actionlint
+        run: uvx --from 'actionlint-py==1.7.12.25' actionlint
+
+  issue-forms:
+    name: Issue forms
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      # setup-uv stopped publishing floating major tags at v8, so pin the release.
+      # Its cache is off: this repository has no lockfile to key one on.
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          enable-cache: false
+
+      - name: Issue forms and config.yml
+        run: uv run --with 'pyyaml==6.0.3' .github/scripts/check_issue_forms.py
+
+  markdown:
+    name: Markdown style
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: DavidAnson/markdownlint-cli2-action@v25
+        with:
+          globs: "**/*.md"
