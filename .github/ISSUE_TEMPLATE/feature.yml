@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        In the sidebar, set **Priority** and **Effort**, and a **Target date** when the work is due by a certain date. Fields need triage access; without it, leave them to a maintainer.
+        In the sidebar, set **Priority** and **Effort**. When the work is due by a certain date, also set a **Target date** a little ahead of it, so there is some padding. Fields need triage access; without it, leave them to a maintainer.
 
         In a public repository, leave out the names of private repositories, links into them, people's names, and anything under investigation.
   - type: textarea
