@@ -69,7 +69,7 @@ In this repository's **Settings > Secrets and variables > Actions**:
 - Variables tab: `SYNC_APP_CLIENT_ID` = the sync app's client ID.
 - Secrets tab: `SYNC_APP_PRIVATE_KEY` = the full contents of the `.pem` file, including the `BEGIN` and `END` lines.
 
-The key has to keep its line breaks. A key whose line breaks turned into spaces, or were dropped, fails with "DECODER routines::unsupported", and the workflow's first step names the secret that has the problem. A key stored on one line with literal `\n` escapes works, because the token action turns them back into line breaks. Setting the secret from the file avoids the problem:
+The key has to keep its line breaks. A key whose line breaks turned into spaces, or were dropped, fails in the token step with "DECODER routines::unsupported". A key stored on one line with literal `\n` escapes works, because the token action turns them back into line breaks. Setting the secret from the file avoids the problem:
 
 ```sh
 gh secret set SYNC_APP_PRIVATE_KEY --repo KingfishProject/.github < path/to/key.pem
