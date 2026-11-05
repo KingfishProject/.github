@@ -69,7 +69,15 @@ In this repository's **Settings > Secrets and variables > Actions**:
 - Variables tab: `SYNC_APP_CLIENT_ID` = the sync app's client ID.
 - Secrets tab: `SYNC_APP_PRIVATE_KEY` = the full contents of the `.pem` file, including the `BEGIN` and `END` lines.
 
-Do not add these at the organization level. Delete the downloaded `.pem` after saving it, or keep it only in 1Password.
+The key has to keep its line breaks. A key pasted as one line, with spaces or a literal `\n` where the newlines were, fails with "DECODER routines::unsupported" (and the workflow's first step now says so). Setting the secret from the file avoids that:
+
+```sh
+gh secret set SYNC_APP_PRIVATE_KEY --repo KingfishProject/.github < path/to/key.pem
+```
+
+The same applies to the organization secret `RELEASE_APP_PRIVATE_KEY`: paste it from the `.pem` file opened in a text editor, not from a field that shows it on one line.
+
+Do not add the sync app's values at the organization level. Delete the downloaded `.pem` after saving it, or keep it only in 1Password.
 
 ### 4. Check the release app and the organization values
 
