@@ -4,7 +4,7 @@ This is the default for every repository in the KingfishProject organization tha
 
 ## Tracking work
 
-Every piece of work has an issue. The issue's fields show where it stands, and so does its **Status** on the [project board](https://github.com/orgs/KingfishProject/projects/5):
+Every piece of work has an issue. The issue shows what stage the work is at, and its **Status** on the [project board](https://github.com/orgs/KingfishProject/projects/5) follows the issue:
 
 | Stage | How it looks on the issue | Status on the board |
 | --- | --- | --- |
@@ -12,9 +12,9 @@ Every piece of work has an issue. The issue's fields show where it stands, and s
 | In progress | Open, with a **Start date**, an assignee, and, when the work changes files, a draft pull request that says `Closes #N` | **In Progress** |
 | Done | Closed: by the merged pull request when there is one, otherwise by hand when the work is done | **Done** |
 
-- Give every issue a type (Task, Bug, or Feature), a **Priority**, and an **Effort**. Work that is due by a certain date also gets that date as its **Deadline**, and a **Target date** a little ahead of it, so there is some padding. Other work can have a Target date too. If a date changes, update it on the issue and say why in a comment. If **Start date**, **Target date**, or **Deadline** is missing from an issue's sidebar, add it with **Add field**.
-- When work starts, set the **Start date**, assign whoever is doing it, and move the issue to **In Progress** on the board. Moving it needs write access to the board; without that, leave it to a maintainer.
-- The board sets **Todo** when an issue joins it and **Done** when it closes. Whenever an issue's Status does not match its stage, such as after the issue is reopened, set the Status by hand.
+- Give every issue a type (Task, Bug, or Feature), a **Priority**, and an **Effort**. Work that is due by a certain date also gets that date as its **Deadline**, and a **Target date** a little ahead of it, so there is some padding. Other work can have a **Target date** too. If a date changes, update it on the issue, keep the **Target date** ahead of the **Deadline**, and say why in a comment. If a field you need is missing from an issue's sidebar, add it with **Add field**, but leave **Start date** empty until work starts.
+- When work starts, set the **Start date**, assign whoever is doing it, and move the issue to **In Progress** on the board.
+- The board sets **Todo** when an issue joins it and **Done** when the issue closes. Whenever an issue's **Status** does not match its stage, such as after the issue is reopened, set the **Status** by hand. If you cannot change the board, because you lack write access to it or your tools cannot reach it, leave the board steps in this section to a maintainer.
 - Break larger work into sub-issues under one parent issue. GitHub shows the parent's progress from its sub-issues.
 - Assign the owner, the person who runs The Kingfish Project, to any issue or pull request that needs their decision, review, or a step only they can take, such as a dashboard setting.
 - Issues opened from the organization's Task, Bug report, and Feature forms join the [project board](https://github.com/orgs/KingfishProject/projects/5) when the person opening them can write to the board. Add every other issue to the board yourself: a blank issue, one opened through the API, or one in a repository with forms of its own.
