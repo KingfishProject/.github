@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        In the sidebar, set **Priority** and **Effort**. When the work is due by a certain date, also set a **Target date** a little ahead of it, so there is some padding. If it belongs to a larger piece of work, such as a release, add it as a sub-issue of that issue. Fields and sub-issues need triage access; without it, leave them to a maintainer.
+        In the sidebar, set **Priority** and **Effort**. When the work is due by a certain date, set that date as the **Deadline** and a **Target date** a little ahead of it, so there is some padding. Other work can have a Target date too. If it belongs to a larger piece of work, such as a release, add it as a sub-issue of that issue. Fields and sub-issues need triage access; without it, leave them to a maintainer. A field missing from the sidebar can be added with **Add field** once the issue is created.
 
         In a public repository, leave out the names of private repositories, links into them, people's names, and anything under investigation.
   - type: textarea

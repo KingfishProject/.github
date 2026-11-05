@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        In the sidebar, set **Priority** and **Effort**. When the fix is due by a certain date, also set a **Target date** a little ahead of it, so there is some padding. Fields need triage access; without it, leave them to a maintainer.
+        In the sidebar, set **Priority** and **Effort**. When the fix is due by a certain date, set that date as the **Deadline** and a **Target date** a little ahead of it, so there is some padding. Other fixes can have a Target date too. Fields need triage access; without it, leave them to a maintainer. A field missing from the sidebar can be added with **Add field** once the issue is created.
 
         In a public repository, never put a security problem, an exposed secret, or anything private in an issue, not even quoted. Report it privately, as the organization's [security policy](https://github.com/KingfishProject/.github/blob/main/SECURITY.md) says.
   - type: textarea
