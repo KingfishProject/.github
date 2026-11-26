@@ -31,7 +31,7 @@ jobs:
 
       # setup-uv stopped publishing floating major tags at v8, so pin the release.
       # Its cache is off: this repository has no lockfile to key one on.
-      - uses: astral-sh/setup-uv@v10.3.3
+      - uses: astral-sh/setup-uv@v10.4.0
         with:
           enable-cache: false
 
@@ -52,7 +52,7 @@ jobs:
 
       # setup-uv stopped publishing floating major tags at v8, so pin the release.
       # Its cache is off: this repository has no lockfile to key one on.
-      - uses: astral-sh/setup-uv@v10.3.3
+      - uses: astral-sh/setup-uv@v10.4.0
         with:
           enable-cache: false
 
